@@ -1,0 +1,221 @@
+{
+	"name": "multi-cursor-viewer",
+	"displayName": "Multi Cursor Viewer",
+	"description": "Display and manipulate multiple cursor in sidebar.",
+	"version": "0.0.1",
+	"publisher": "tobi-c",
+	"engines": {
+		"vscode": "^1.66.0"
+	},
+	"keywords": [
+		"multiple cursor",
+		"sidebar"
+	],
+	"categories": [
+		"Other"
+	],
+	"homepage": "https://github.com/tobi-c/multi-cursor-viewer",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tobi-c/multi-cursor-viewer.git"
+    },
+	"license": "SEE LICENSE IN License.txt",
+	"icon": "images/icon128.png",
+	"activationEvents": [
+		"onStartupFinished",
+		"onView:multiCursorViewerView"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "multi-cursor-viewer.refresh",
+				"title": "Refresh",
+				"category": "MultiCursorViewer",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "multi-cursor-viewer.undo",
+				"title": "Cursor Undo",
+				"category": "MultiCursorViewer",
+				"icon": "$(discard)"
+			},
+			{
+				"command": "multi-cursor-viewer.redo",
+				"title": "Cursor Redo",
+				"category": "MultiCursorViewer",
+				"icon": "$(redo)"
+			},
+			{
+				"command": "multi-cursor-viewer.removeCursor",
+				"title": "Remove Cursor",
+				"category": "MultiCursorViewer",
+				"icon": "$(close)"
+			},
+			{
+				"command": "multi-cursor-viewer.cursorStartLeft",
+				"title": "Move Left Selection Start",
+				"category": "MultiCursorViewer",
+				"icon": "$(arrow-left)"
+			},
+			{
+				"command": "multi-cursor-viewer.cursorStartRight",
+				"title": "Move Right Selection Start",
+				"category": "MultiCursorViewer",
+				"icon": "$(arrow-circle-right)"
+			},
+			{
+				"command": "multi-cursor-viewer.cursorEndLeft",
+				"title": "Move Left Selection End",
+				"category": "MultiCursorViewer",
+				"icon": "$(arrow-circle-left)"
+			},
+			{
+				"command": "multi-cursor-viewer.cursorEndRight",
+				"title": "Move Right Selection End",
+				"category": "MultiCursorViewer",
+				"icon": "$(arrow-right)"
+			},
+			{
+				"command": "multi-cursor-viewer.selectTreeItem",
+				"title": "Select Item",
+				"category": "MultiCursorViewer",
+				"icon": "$(selection)"
+			},
+			{
+				"command": "multi-cursor-viewer.replace",
+				"title": "Replace",
+				"category": "MultiCursorViewer",
+				"icon": "$(edit)"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "multi-cursor-viewer",
+					"title": "Multi Cursor Viewer",
+					"icon": "images/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"multi-cursor-viewer": [
+				{
+					"id": "multiCursorViewerView",
+					"name": "Multi Cursor Viewer"
+				}
+			]
+		},
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "multi-cursor-viewer.refresh"
+				},
+				{
+					"command": "multi-cursor-viewer.replace"
+				},
+				{
+					"command": "multi-cursor-viewer.undo",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.redo",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.removeCursor",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorStartLeft",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorStartRight",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorEndLeft",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorEndRight",
+					"when": "false"
+				},
+				{
+					"command": "multi-cursor-viewer.selectTreeItem",
+					"when": "false"
+				}
+			],
+			"view/title": [
+				{
+					"command": "multi-cursor-viewer.replace",
+					"when": "view == multiCursorViewerView",
+					"group": "navigation@0"
+				},
+				{
+					"command": "multi-cursor-viewer.undo",
+					"when": "view == multiCursorViewerView",
+					"group": "navigation@1"
+				},
+				{
+					"command": "multi-cursor-viewer.redo",
+					"when": "view == multiCursorViewerView",
+					"group": "navigation@2"
+				},
+				{
+					"command": "multi-cursor-viewer.refresh",
+					"when": "view == multiCursorViewerView",
+					"group": "navigation@3"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "multi-cursor-viewer.cursorStartLeft",
+					"when": "view == multiCursorViewerView",
+					"group": "inline@0"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorStartRight",
+					"when": "view == multiCursorViewerView",
+					"group": "inline@1"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorEndLeft",
+					"when": "view == multiCursorViewerView",
+					"group": "inline@2"
+				},
+				{
+					"command": "multi-cursor-viewer.cursorEndRight",
+					"when": "view == multiCursorViewerView",
+					"group": "inline@3"
+				},
+				{
+					"command": "multi-cursor-viewer.removeCursor",
+					"when": "view == multiCursorViewerView",
+					"group": "inline@4"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.66.0",
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "14.x",
+		"@typescript-eslint/eslint-plugin": "^5.21.0",
+		"@typescript-eslint/parser": "^5.21.0",
+		"eslint": "^8.14.0",
+		"glob": "^8.0.1",
+		"mocha": "^9.2.2",
+		"typescript": "^4.6.4",
+		"@vscode/test-electron": "^2.1.3"
+	}
+}
