@@ -52,11 +52,11 @@ export class MultiCursorViewerTreeItem extends vscode.TreeItem {
         let props = {
             text: text,
             selected: text.length,
-            startLine: (selection.start.line + 1).toString(),
-            startCol: (selection.start.character + 1).toString()
+            cursorLine: (selection.active.line + 1).toString(),
+            cursorCol: (selection.active.character + 1).toString()
         };
 
-        let label = "Ln {startLine}, Col {startCol} ({selected} selected)";
+        let label = "Ln {line}, Col {col} ({selected} selected)";
         let description = "{text}";
 
         label = MultiCursorViewerTreeItem.replaceText(label, props);
@@ -75,8 +75,8 @@ export class MultiCursorViewerTreeItem extends vscode.TreeItem {
     private static replaceText(text: string, props: any): string {
         text = text.replace("{text}", props.text);
         text = text.replace("{selected}", props.selected);
-        text = text.replace("{startLine}", props.startLine);
-        text = text.replace("{startCol}", props.startCol);
+        text = text.replace("{line}", props.cursorLine);
+        text = text.replace("{col}", props.cursorCol);
 
         return text;
     }
