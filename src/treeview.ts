@@ -2,47 +2,100 @@ import * as vscode from 'vscode';
 
 export class MultiCursorViewerTreeProvider implements vscode.TreeDataProvider<MultiCursorViewerTreeItem> {
     private multiCursor: boolean = false;
+    private treeItems: Array<MultiCursorViewerTreeItem> = [];
 
     getTreeItem(element: MultiCursorViewerTreeItem): vscode.TreeItem {
         return element;
     }
 
     getChildren(element?: MultiCursorViewerTreeItem): Thenable<MultiCursorViewerTreeItem[]> {
+        this.updateCursorState();
+        this.treeItems = [];
+        if (!this.multiCursor) {
+            return Promise.resolve(this.treeItems);
+        }
+
+
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
-            this.multiCursor = false;
-            return Promise.resolve([]);
+            return Promise.resolve(this.treeItems);
         }
 
-        if (editor.selections.length < 2) {
-            this.multiCursor = false;
-            return Promise.resolve([]);
-        }
-
-        this.multiCursor = true;
-        let treeItems = [];
         for (let selection of editor.selections) {
-            treeItems.push(new MultiCursorViewerTreeItem(editor, selection));
+            this.treeItems.push(new MultiCursorViewerTreeItem(editor, selection));
         }
 
-        treeItems.sort((a, b) => a.selection.start.compareTo(b.selection.start));
-        return Promise.resolve(treeItems);
+        this.treeItems.sort((a, b) => a.selection.start.compareTo(b.selection.start));
+        return Promise.resolve(this.treeItems);
     }
 
     private _onDidChangeTreeData: vscode.EventEmitter<MultiCursorViewerTreeItem | undefined | null | void> = new vscode.EventEmitter<MultiCursorViewerTreeItem | undefined | null | void>();
     readonly onDidChangeTreeData: vscode.Event<MultiCursorViewerTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
     refresh(): void {
+        this.updateCursorState();
+        if (this.multiCursor || this.treeItems.length !== 0) {
+            this._onDidChangeTreeData.fire();
+        }
+    }
+
+    private updateCursorState() {
+        let multiCursorOld = this.multiCursor;
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            this.multiCursor = false;
+            this.autoCommand(multiCursorOld);
+            return;
+        }
+
+        if (editor.selections.length < 2) {
+            this.multiCursor = false;
+            this.autoCommand(multiCursorOld);
+            return;
+        }
+
+        this.multiCursor = true;
+        this.autoCommand(multiCursorOld);
+        return;
+    }
+
+    private autoCommand(multiCursorOld: boolean) {
+        if (multiCursorOld === this.multiCursor) {
+            return;
+        }
+
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
             return;
         }
 
-        if (editor.selections.length < 2 && !this.multiCursor) {
-            return;
+        if (this.multiCursor) {
+            let config = vscode.workspace.getConfiguration('multi-cursor-viewer');
+            let command = config.get("autoCommandMultiCursor") as string;
+            if (command !== "") {
+                vscode.commands.executeCommand(command).then(() => {
+                    setTimeout(() => {
+                        if (editor) {
+                            vscode.window.showTextDocument(editor.document);
+                        }
+                    });
+                });
+            }
+        } else {
+            let config = vscode.workspace.getConfiguration('multi-cursor-viewer');
+            let command = config.get("autoCommandSingleCursor") as string;
+            if (command !== "") {
+                vscode.commands.executeCommand(command).then(() => {
+                    setTimeout(() => {
+                        if (editor) {
+                            vscode.window.showTextDocument(editor.document);
+                        }
+                    });
+                });
+            }
         }
 
-        this._onDidChangeTreeData.fire();
+        return;
     }
 }
 

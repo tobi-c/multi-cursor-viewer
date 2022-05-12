@@ -15,10 +15,10 @@
 		"Other"
 	],
 	"homepage": "https://github.com/tobi-c/multi-cursor-viewer",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/tobi-c/multi-cursor-viewer.git"
-    },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tobi-c/multi-cursor-viewer.git"
+	},
 	"license": "SEE LICENSE IN License.txt",
 	"icon": "images/icon128.png",
 	"activationEvents": [
@@ -196,7 +196,29 @@
 					"group": "inline@4"
 				}
 			]
-		}
+		},
+		"configuration": [
+			{
+				"title": "AutoCommandMultiCursor",
+				"properties": {
+					"multi-cursor-viewer.autoCommandMultiCursor": {
+						"type": "string",
+						"default": "",
+						"description": "Set command ID to be executed automatically when changes from single cursor to multi cursor."
+					}
+				}
+			},
+			{
+				"title": "AutoCommandSingleCursor",
+				"properties": {
+					"multi-cursor-viewer.autoCommandSingleCursor": {
+						"type": "string",
+						"default": "",
+						"description": "Set command ID to be executed automatically when changes from multi cursor to single cursor."
+					}
+				}
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
