@@ -2,7 +2,7 @@
 	"name": "multi-cursor-viewer",
 	"displayName": "Multi Cursor Viewer",
 	"description": "Display and manipulate multiple cursor in sidebar.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "tobi-c",
 	"engines": {
 		"vscode": "^1.66.0"
