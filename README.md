@@ -10,7 +10,6 @@ When multi-cursor, a list of cursors is displayed in the sidebar. The cursors in
 
 
 ### Remove cursor
-Cursor can be deleted later.
 
 ![remove cursor](images/remove_cursor.gif)
 
@@ -23,4 +22,23 @@ Replace with selected text(`$1`).
 ![replace selected text](images/replace1.gif)
 
 Replace with sequential number(`$$`).
-![replace sequential numbe](images/replace2.gif)
+![replace sequential number](images/replace2.gif)
+
+## Settings
+
+This extension contributes the following settings:
+
+- `multi-cursor-viewer.autoCommandMultiCursor`
+  - Set command ID to be executed automatically when changes from single cursor to multi cursor
+- `multi-cursor-viewer.autoCommandSingleCursor`
+  - Set command ID to be executed automatically when changes from multi cursor to single cursor
+
+### Example Settings
+The following settings automatically open `Multi Cursor Viewer` sidebar when multi cursor.
+
+```
+"multi-cursor-viewer.autoCommandMultiCursor": "workbench.view.extension.multi-cursor-viewer"
+```
+
+![auto command example](images/auto_command.gif)
+
